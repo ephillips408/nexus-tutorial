@@ -6,7 +6,13 @@ export const Post = objectType({
     t.int('id')            
     t.string('title')      
     t.string('body')       
-    t.boolean('published') 
+    t.boolean('published')
+    t.field('authorId', {
+      type: 'User',
+      resolve(_root, _args, ctx) {
+        return ctx.db.user.findUnique({ where: { id: _root.id || undefined} })
+      }
+    })
   },
 })
 
@@ -34,11 +40,13 @@ export const PostMutation = extendType({
     t.nonNull.field('createDraft', {
       type: 'Post',
       args: {
+        authorId: nonNull(intArg()),
         title: nonNull(stringArg()),
         body: nonNull(stringArg())
       },
       resolve(_root, args, ctx) {
         const draft = {
+          authorId: args.authorId, // Testing this to see if it allows for creation of draft.
           title: args.title,
           body: args.body,
           published: false,
@@ -46,6 +54,7 @@ export const PostMutation = extendType({
         return ctx.db.post.create({ data: draft })
       }
     })
+
     t.field('publish', {
       type: 'Post',
       args: {
@@ -58,6 +67,16 @@ export const PostMutation = extendType({
             published: true
           }
         })
+      }
+    })
+
+    t.field('deletePost', {
+      type: 'Post',
+      args: {
+        id: nonNull(intArg())
+      },
+      resolve(_, args, ctx) {
+        return ctx.db.post.delete({ where: { id: args.id } })
       }
     })
   }

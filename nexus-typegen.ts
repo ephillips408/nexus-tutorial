@@ -36,6 +36,12 @@ export interface NexusGenObjects {
     title?: string | null; // String
   }
   Query: {};
+  User: { // root type
+    email: string; // String!
+    id: number; // Int!
+    password: string; // String!
+    username: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -51,9 +57,12 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createDraft: NexusGenRootTypes['Post']; // Post!
+    createUser: NexusGenRootTypes['User']; // User!
+    deletePost: NexusGenRootTypes['Post'] | null; // Post
     publish: NexusGenRootTypes['Post'] | null; // Post
   }
   Post: { // field return type
+    authorId: NexusGenRootTypes['User'] | null; // User
     body: string | null; // String
     id: number | null; // Int
     published: boolean | null; // Boolean
@@ -63,14 +72,24 @@ export interface NexusGenFieldTypes {
     drafts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
     posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
   }
+  User: { // field return type
+    email: string; // String!
+    id: number; // Int!
+    password: string; // String!
+    posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
+    username: string; // String!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createDraft: 'Post'
+    createUser: 'User'
+    deletePost: 'Post'
     publish: 'Post'
   }
   Post: { // field return type name
+    authorId: 'User'
     body: 'String'
     id: 'Int'
     published: 'Boolean'
@@ -80,13 +99,29 @@ export interface NexusGenFieldTypeNames {
     drafts: 'Post'
     posts: 'Post'
   }
+  User: { // field return type name
+    email: 'String'
+    id: 'Int'
+    password: 'String'
+    posts: 'Post'
+    username: 'String'
+  }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
     createDraft: { // args
+      authorId: number; // Int!
       body: string; // String!
       title: string; // String!
+    }
+    createUser: { // args
+      email: string; // String!
+      password: string; // String!
+      username: string; // String!
+    }
+    deletePost: { // args
+      id: number; // Int!
     }
     publish: { // args
       draftId: number; // Int!
