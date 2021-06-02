@@ -1,5 +1,4 @@
-import { objectType, extendType, nonNull, stringArg } from 'nexus'
-import { Post } from './Post'
+import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus'
 
 export const User = objectType({
   name: 'User',
@@ -12,6 +11,28 @@ export const User = objectType({
       type: 'Post',
       resolve(_root, _args, ctx) {
         return ctx.db.post.findMany({ where: { id: _root.id } || undefined })
+      }
+    })
+  }
+})
+
+export const UserQuery = extendType({
+  type: 'Query',
+  definition(t) {
+    t.nonNull.list.field('allUsers', {
+      type: 'User',
+      resolve(_root, _args, ctx) {
+        return ctx.db.user.findMany()
+      }
+    })
+
+    t.field('userById', {
+      type: 'User',
+      args: {
+        id: nonNull(intArg())
+      },
+      resolve(_root, _args, ctx) {
+        return ctx.db.user.findUnique({ where: { id : _args.id || undefined} })
       }
     })
   }

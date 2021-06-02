@@ -7,7 +7,7 @@ export const Post = objectType({
     t.string('title')      
     t.string('body')       
     t.boolean('published')
-    t.field('authorId', {
+    t.field('author', {
       type: 'User',
       resolve(_root, _args, ctx) {
         return ctx.db.user.findUnique({ where: { id: _root.id || undefined} })
@@ -46,7 +46,7 @@ export const PostMutation = extendType({
       },
       resolve(_root, args, ctx) {
         const draft = {
-          authorId: args.authorId, // Testing this to see if it allows for creation of draft.
+          authorId: args.authorId,
           title: args.title,
           body: args.body,
           published: false,

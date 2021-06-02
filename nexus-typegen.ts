@@ -62,15 +62,17 @@ export interface NexusGenFieldTypes {
     publish: NexusGenRootTypes['Post'] | null; // Post
   }
   Post: { // field return type
-    authorId: NexusGenRootTypes['User'] | null; // User
+    author: NexusGenRootTypes['User'] | null; // User
     body: string | null; // String
     id: number | null; // Int
     published: boolean | null; // Boolean
     title: string | null; // String
   }
   Query: { // field return type
+    allUsers: Array<NexusGenRootTypes['User'] | null>; // [User]!
     drafts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
     posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
+    userById: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
     email: string; // String!
@@ -89,15 +91,17 @@ export interface NexusGenFieldTypeNames {
     publish: 'Post'
   }
   Post: { // field return type name
-    authorId: 'User'
+    author: 'User'
     body: 'String'
     id: 'Int'
     published: 'Boolean'
     title: 'String'
   }
   Query: { // field return type name
+    allUsers: 'User'
     drafts: 'Post'
     posts: 'Post'
+    userById: 'User'
   }
   User: { // field return type name
     email: 'String'
@@ -125,6 +129,11 @@ export interface NexusGenArgTypes {
     }
     publish: { // args
       draftId: number; // Int!
+    }
+  }
+  Query: {
+    userById: { // args
+      id: number; // Int!
     }
   }
 }

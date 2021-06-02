@@ -10,7 +10,7 @@ type Mutation {
 }
 
 type Post {
-  authorId: User
+  author: User
   body: String
   id: Int
   published: Boolean
@@ -18,8 +18,10 @@ type Post {
 }
 
 type Query {
+  allUsers: [User]!
   drafts: [Post]!
   posts: [Post]
+  userById(id: Int!): User
 }
 
 type User {
