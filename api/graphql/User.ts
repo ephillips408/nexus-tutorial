@@ -11,9 +11,9 @@ export const User = objectType({
       type: 'Post',
       resolve(_root, _args, ctx) {
         return ctx.db.post.findMany({ where: { id: _root.id } || undefined })
-      }
+      },
     })
-  }
+  },
 })
 
 export const UserQuery = extendType({
@@ -23,39 +23,69 @@ export const UserQuery = extendType({
       type: 'User',
       resolve(_root, _args, ctx) {
         return ctx.db.user.findMany()
-      }
+      },
     })
 
     t.field('userById', {
       type: 'User',
       args: {
-        id: nonNull(intArg())
+        id: nonNull(intArg()),
       },
       resolve(_root, _args, ctx) {
-        return ctx.db.user.findUnique({ where: { id : _args.id || undefined} })
-      }
+        return ctx.db.user.findUnique({ where: { id: _args.id || undefined } })
+      },
     })
-  }
+  },
 })
 
 export const UserMutation = extendType({
   type: 'Mutation',
   definition(t) {
-    t.nonNull.field('createUser', {
+    t.field('createUser', {
       type: 'User',
       args: {
         username: nonNull(stringArg()),
         email: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
-      resolve(_root, _args, ctx) {
+      async resolve(_root, _args, ctx) {
+        await ctx.db.user
+          .findFirst({
+            where: {
+              email: {
+                equals: _args.email,
+              },
+            },
+          })
+          .then((res) => {
+            // This gives the email that is used in the createUser mutation.
+            // If res !== null, then findFirst found a user with the email taken.
+            if (res !== null) {
+              throw new Error('Email already in use.')
+            }
+          })
+          .catch((error) => {
+            throw new Error(`${error}`)
+          })
+
         const user = {
           username: _args.username,
           email: _args.email,
-          password: _args.password
+          password: _args.password,
         }
+
         return ctx.db.user.create({ data: user })
-      }
+      },
     })
-  }
+
+    t.field('deleteUser', {
+      type: 'User',
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve(_root, _args, ctx) {
+        return ctx.db.user.delete({ where: { id: _args.id } })
+      },
+    })
+  },
 })

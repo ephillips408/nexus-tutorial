@@ -1,17 +1,17 @@
 import { objectType, extendType, stringArg, nonNull, intArg } from 'nexus'
 
 export const Post = objectType({
-  name: 'Post',            
+  name: 'Post',
   definition(t) {
-    t.int('id')            
-    t.string('title')      
-    t.string('body')       
+    t.int('id')
+    t.string('title')
+    t.string('body')
     t.boolean('published')
     t.field('author', {
       type: 'User',
       resolve(_root, _args, ctx) {
-        return ctx.db.user.findUnique({ where: { id: _root.id || undefined} })
-      }
+        return ctx.db.user.findUnique({ where: { id: _root.id || undefined } })
+      },
     })
   },
 })
@@ -23,13 +23,13 @@ export const PostQuery = extendType({
       type: 'Post',
       resolve(_root, _args, ctx) {
         return ctx.db.post.findMany({ where: { published: false } })
-      }
+      },
     })
     t.list.field('posts', {
       type: 'Post',
       resolve(_root, _args, ctx) {
         return ctx.db.post.findMany({ where: { published: true } })
-      }
+      },
     })
   },
 })
@@ -42,7 +42,7 @@ export const PostMutation = extendType({
       args: {
         authorId: nonNull(intArg()),
         title: nonNull(stringArg()),
-        body: nonNull(stringArg())
+        body: nonNull(stringArg()),
       },
       resolve(_root, args, ctx) {
         const draft = {
@@ -52,34 +52,32 @@ export const PostMutation = extendType({
           published: false,
         }
         return ctx.db.post.create({ data: draft })
-      }
+      },
     })
 
     t.field('publish', {
       type: 'Post',
       args: {
-        draftId: nonNull(intArg())
+        draftId: nonNull(intArg()),
       },
       resolve(_root, args, ctx) {
         return ctx.db.post.update({
           where: { id: args.draftId },
           data: {
-            published: true
-          }
+            published: true,
+          },
         })
-      }
+      },
     })
 
     t.field('deletePost', {
       type: 'Post',
       args: {
-        id: nonNull(intArg())
+        id: nonNull(intArg()),
       },
       resolve(_, args, ctx) {
         return ctx.db.post.delete({ where: { id: args.id } })
-      }
+      },
     })
-  }
+  },
 })
-
-
