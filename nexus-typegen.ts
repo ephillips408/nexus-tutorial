@@ -31,14 +31,14 @@ export interface NexusGenObjects {
   Mutation: {};
   Post: { // root type
     body?: string | null; // String
-    id?: number | null; // Int
+    id?: string | null; // String
     published?: boolean | null; // Boolean
     title?: string | null; // String
   }
   Query: {};
   User: { // root type
     email: string; // String!
-    id: number; // Int!
+    id: string; // String!
     password: string; // String!
     username: string; // String!
   }
@@ -65,7 +65,7 @@ export interface NexusGenFieldTypes {
   Post: { // field return type
     author: NexusGenRootTypes['User'] | null; // User
     body: string | null; // String
-    id: number | null; // Int
+    id: string | null; // String
     published: boolean | null; // Boolean
     title: string | null; // String
   }
@@ -77,7 +77,7 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     email: string; // String!
-    id: number; // Int!
+    id: string; // String!
     password: string; // String!
     posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
     username: string; // String!
@@ -95,7 +95,7 @@ export interface NexusGenFieldTypeNames {
   Post: { // field return type name
     author: 'User'
     body: 'String'
-    id: 'Int'
+    id: 'String'
     published: 'Boolean'
     title: 'String'
   }
@@ -107,7 +107,7 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     email: 'String'
-    id: 'Int'
+    id: 'String'
     password: 'String'
     posts: 'Post'
     username: 'String'
@@ -117,7 +117,7 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     createDraft: { // args
-      authorId: number; // Int!
+      authorId: string; // String!
       body: string; // String!
       title: string; // String!
     }
@@ -127,18 +127,18 @@ export interface NexusGenArgTypes {
       username: string; // String!
     }
     deletePost: { // args
-      id: number; // Int!
+      id: string; // String!
     }
     deleteUser: { // args
-      id: number; // Int!
+      id: string; // String!
     }
     publish: { // args
-      draftId: number; // Int!
+      draftId: string; // String!
     }
   }
   Query: {
     userById: { // args
-      id: number; // Int!
+      id: string; // String!
     }
   }
 }

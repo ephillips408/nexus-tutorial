@@ -3,7 +3,7 @@ import { objectType, extendType, stringArg, nonNull, intArg } from 'nexus'
 export const Post = objectType({
   name: 'Post',
   definition(t) {
-    t.int('id')
+    t.string('id')
     t.string('title')
     t.string('body')
     t.boolean('published')
@@ -40,7 +40,7 @@ export const PostMutation = extendType({
     t.nonNull.field('createDraft', {
       type: 'Post',
       args: {
-        authorId: nonNull(intArg()),
+        authorId: nonNull(stringArg()),
         title: nonNull(stringArg()),
         body: nonNull(stringArg()),
       },
@@ -58,7 +58,7 @@ export const PostMutation = extendType({
     t.field('publish', {
       type: 'Post',
       args: {
-        draftId: nonNull(intArg()),
+        draftId: nonNull(stringArg()),
       },
       resolve(_root, args, ctx) {
         return ctx.db.post.update({
@@ -73,7 +73,7 @@ export const PostMutation = extendType({
     t.field('deletePost', {
       type: 'Post',
       args: {
-        id: nonNull(intArg()),
+        id: nonNull(stringArg()),
       },
       resolve(_, args, ctx) {
         return ctx.db.post.delete({ where: { id: args.id } })

@@ -3,17 +3,17 @@
 
 
 type Mutation {
-  createDraft(authorId: Int!, body: String!, title: String!): Post!
+  createDraft(authorId: String!, body: String!, title: String!): Post!
   createUser(email: String!, password: String!, username: String!): User
-  deletePost(id: Int!): Post
-  deleteUser(id: Int!): User
-  publish(draftId: Int!): Post
+  deletePost(id: String!): Post
+  deleteUser(id: String!): User
+  publish(draftId: String!): Post
 }
 
 type Post {
   author: User
   body: String
-  id: Int
+  id: String
   published: Boolean
   title: String
 }
@@ -22,12 +22,12 @@ type Query {
   allUsers: [User]!
   drafts: [Post]!
   posts: [Post]
-  userById(id: Int!): User
+  userById(id: String!): User
 }
 
 type User {
   email: String!
-  id: Int!
+  id: String!
   password: String!
   posts: [Post]
   username: String!

@@ -27,7 +27,8 @@
     "@prisma/client": "^2.24.0",
     "apollo-server": "^2.25.0",
     "graphql": "^15.5.0",
-    "nexus": "^1.0.0"
+    "nexus": "^1.0.0",
+    "uuidv4": "^6.2.8"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",

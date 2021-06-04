@@ -3,7 +3,7 @@ import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus'
 export const User = objectType({
   name: 'User',
   definition(t) {
-    t.nonNull.int('id')
+    t.nonNull.string('id')
     t.nonNull.string('username')
     t.nonNull.string('email')
     t.nonNull.string('password')
@@ -29,10 +29,10 @@ export const UserQuery = extendType({
     t.field('userById', {
       type: 'User',
       args: {
-        id: nonNull(intArg()),
+        id: nonNull(stringArg()),
       },
       resolve(_root, _args, ctx) {
-        return ctx.db.user.findUnique({ where: { id: _args.id || undefined } })
+        return ctx.db.user.findFirst({ where: { id: _args.id || undefined } })
       },
     })
   },
@@ -81,7 +81,7 @@ export const UserMutation = extendType({
     t.field('deleteUser', {
       type: 'User',
       args: {
-        id: nonNull(intArg()),
+        id: nonNull(stringArg()),
       },
       resolve(_root, _args, ctx) {
         return ctx.db.user.delete({ where: { id: _args.id } })
