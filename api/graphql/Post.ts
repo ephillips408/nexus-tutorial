@@ -1,4 +1,4 @@
-import { objectType, extendType, stringArg, nonNull, intArg } from 'nexus'
+import { objectType, extendType, stringArg, nonNull } from 'nexus'
 
 export const Post = objectType({
   name: 'Post',
@@ -10,7 +10,7 @@ export const Post = objectType({
     t.field('author', {
       type: 'User',
       resolve(_root, _args, ctx) {
-        return ctx.db.user.findUnique({ where: { id: _root.id || undefined } })
+        return ctx.db.user.findUnique({ where: { id : _root.id || undefined } })
       },
     })
   },
@@ -40,13 +40,13 @@ export const PostMutation = extendType({
     t.nonNull.field('createDraft', {
       type: 'Post',
       args: {
-        authorId: nonNull(stringArg()),
+        authorId: nonNull(stringArg()), // Maybe making this a User would work. 
         title: nonNull(stringArg()),
         body: nonNull(stringArg()),
       },
       resolve(_root, args, ctx) {
         const draft = {
-          authorId: args.authorId,
+          authorId: args.authorId, // Changing this to author gives an error.
           title: args.title,
           body: args.body,
           published: false,

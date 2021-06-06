@@ -1,4 +1,4 @@
-import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus'
+import { objectType, extendType, nonNull, stringArg } from 'nexus'
 
 export const User = objectType({
   name: 'User',
@@ -10,7 +10,7 @@ export const User = objectType({
     t.list.field('posts', {
       type: 'Post',
       resolve(_root, _args, ctx) {
-        return ctx.db.post.findMany({ where: { id: _root.id } || undefined })
+        return ctx.db.post.findMany({ where: { authorId: _root.id } || undefined })
       },
     })
   },
