@@ -30,6 +30,7 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Mutation: {};
   Post: { // root type
+    authorId?: string | null; // String
     body?: string | null; // String
     id?: string | null; // String
     published?: boolean | null; // Boolean
@@ -64,6 +65,7 @@ export interface NexusGenFieldTypes {
   }
   Post: { // field return type
     author: NexusGenRootTypes['User'] | null; // User
+    authorId: string | null; // String
     body: string | null; // String
     id: string | null; // String
     published: boolean | null; // Boolean
@@ -94,6 +96,7 @@ export interface NexusGenFieldTypeNames {
   }
   Post: { // field return type name
     author: 'User'
+    authorId: 'String'
     body: 'String'
     id: 'String'
     published: 'Boolean'

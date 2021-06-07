@@ -7,10 +7,11 @@ export const Post = objectType({
     t.string('title')
     t.string('body')
     t.boolean('published')
+    t.string('authorId')
     t.field('author', {
       type: 'User',
       resolve(_root, _args, ctx) {
-        return ctx.db.user.findUnique({ where: { id : _root.id || undefined } })
+        return ctx.db.user.findFirst({ where: { id : _root.authorId || undefined } })
       },
     })
   },
