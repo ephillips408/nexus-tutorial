@@ -6,11 +6,14 @@ it('ensures that a draft can be created and published', async () => {
   // Create a new draft
   const draftResult = await ctx.client.request(`
     mutation {
-      createDraft(title: "Nexus", body: "...") {
-        id
-        title
-        body
-        published
+      createDraft(
+        authorId: "d5e48528-5a1b-4c19-bca6-64fece448e9e"
+        title: "Nexus", 
+        body: "...") {
+          id
+          title
+          body
+          published
       }
     }
   `)
@@ -20,7 +23,7 @@ it('ensures that a draft can be created and published', async () => {
 Object {
   "createDraft": Object {
     "body": "...",
-    "id": 1,
+    "id": "6ae33938-fe49-45a0-ac56-2bbc12ee48ff",
     "published": false,
     "title": "Nexus",
   },
@@ -29,7 +32,7 @@ Object {
 
   // Publish the previously created draft
   const publishResult = await ctx.client.request(`
-    mutation publishDraft($draftId: Int!) {
+    mutation publishDraft($draftId: String!) {
       publish(draftId: $draftId) {
         id
         title
@@ -46,38 +49,49 @@ Object {
 Object {
   "publish": Object {
     "body": "...",
-    "id": 1,
+    "id": "6ae33938-fe49-45a0-ac56-2bbc12ee48ff",
     "published": true,
     "title": "Nexus",
   },
 }
 `)
 
-const persistedData = await ctx.db.post.findMany()
+  const persistedData = await ctx.db.post.findMany()
 
-expect(persistedData).toMatchInlineSnapshot(`
+  expect(persistedData).toMatchInlineSnapshot(`
 Array [
   Object {
-    "body": "...",
-    "id": 1,
+    "authorId": "d5e48528-5a1b-4c19-bca6-64fece448e9e",
+    "body": "New hello post",
+    "id": "78de34fa-8b7a-4731-ba77-f549537518fd",
     "published": true,
+    "title": "Hello Post",
+  },
+  Object {
+    "authorId": "d5e48528-5a1b-4c19-bca6-64fece448e9e",
+    "body": "Second post",
+    "id": "0dc4b619-f514-49f8-937a-d047168fa27f",
+    "published": false,
+    "title": "Hello Second Post",
+  },
+  Object {
+    "authorId": "d5e48528-5a1b-4c19-bca6-64fece448e9e",
+    "body": "...",
+    "id": "f9714ef7-b84a-4e60-bfe2-ee4bdf0ef59d",
+    "published": false,
     "title": "Nexus",
   },
   Object {
-    "body": "Post Body",
-    "id": 2,
-    "published": true,
-    "title": "New Post",
-  },
-  Object {
+    "authorId": "d5e48528-5a1b-4c19-bca6-64fece448e9e",
     "body": "...",
-    "id": 3,
-    "published": true,
+    "id": "624db3e0-8643-4204-a27d-9f0bf30a287e",
+    "published": false,
     "title": "Nexus",
   },
   Object {
+    "authorId": "d5e48528-5a1b-4c19-bca6-64fece448e9e",
     "body": "...",
-    "id": 4,
+    "id": "6ae33938-fe49-45a0-ac56-2bbc12ee48ff",
     "published": true,
     "title": "Nexus",
   },
