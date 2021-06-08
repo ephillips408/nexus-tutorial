@@ -25,9 +25,14 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  UUID: any
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token?: string | null; // String
+    user?: NexusGenRootTypes['User'] | null; // User
+  }
   Mutation: {};
   Post: { // root type
     authorId?: string | null; // String
@@ -56,11 +61,16 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string | null; // String
+    user: NexusGenRootTypes['User'] | null; // User
+  }
   Mutation: { // field return type
     createDraft: NexusGenRootTypes['Post']; // Post!
     createUser: NexusGenRootTypes['User'] | null; // User
     deletePost: NexusGenRootTypes['Post'] | null; // Post
     deleteUser: NexusGenRootTypes['User'] | null; // User
+    login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     publish: NexusGenRootTypes['Post'] | null; // Post
   }
   Post: { // field return type
@@ -72,9 +82,10 @@ export interface NexusGenFieldTypes {
     title: string | null; // String
   }
   Query: { // field return type
+    allDrafts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
+    allPosts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
     allUsers: Array<NexusGenRootTypes['User'] | null>; // [User]!
-    drafts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
-    posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
+    searchPosts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
     userById: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
@@ -87,11 +98,16 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
   Mutation: { // field return type name
     createDraft: 'Post'
     createUser: 'User'
     deletePost: 'Post'
     deleteUser: 'User'
+    login: 'AuthPayload'
     publish: 'Post'
   }
   Post: { // field return type name
@@ -103,9 +119,10 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
   }
   Query: { // field return type name
+    allDrafts: 'Post'
+    allPosts: 'Post'
     allUsers: 'User'
-    drafts: 'Post'
-    posts: 'Post'
+    searchPosts: 'Post'
     userById: 'User'
   }
   User: { // field return type name
@@ -135,11 +152,18 @@ export interface NexusGenArgTypes {
     deleteUser: { // args
       id: string; // String!
     }
+    login: { // args
+      email: string; // String!
+      password: string; // String!
+    }
     publish: { // args
       draftId: string; // String!
     }
   }
   Query: {
+    searchPosts: { // args
+      searchString: string; // String!
+    }
     userById: { // args
       id: string; // String!
     }

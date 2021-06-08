@@ -1,4 +1,6 @@
 import { objectType, extendType, nonNull, stringArg } from 'nexus'
+import { compare, hash } from 'bcrypt'
+import { sign } from 'jsonwebtoken'
 
 export const User = objectType({
   name: 'User',
@@ -10,7 +12,9 @@ export const User = objectType({
     t.list.field('posts', {
       type: 'Post',
       resolve(_root, _args, ctx) {
-        return ctx.db.post.findMany({ where: { authorId: _root.id } || undefined })
+        return ctx.db.post.findMany({
+          where: { authorId: _root.id } || undefined,
+        })
       },
     })
   },
@@ -68,13 +72,48 @@ export const UserMutation = extendType({
             throw new Error(`${error}`)
           })
 
+        const hashedPassword = await hash(_args.password, 10)
+
         const user = {
           username: _args.username,
           email: _args.email,
-          password: _args.password,
+          password: hashedPassword,
         }
 
         return ctx.db.user.create({ data: user })
+      },
+    })
+
+    t.field('login', {
+      type: 'AuthPayload',
+      args: {
+        email: nonNull(stringArg()),
+        password: nonNull(stringArg()),
+      },
+      async resolve(_parent, _args, ctx) {
+        const user = await ctx.db.user
+          .findUnique({
+            where: {
+              email: _args.email
+            },
+          })
+        
+        if (!user) {
+          throw new Error(`No user found with email ${_args.email}`)
+        }
+
+        console.log(user.password)
+
+        const passwordValid = await compare(_args.password, user.password)
+
+        if (!passwordValid) {
+          throw new Error('Invalid password')
+        }
+
+        return {
+          token: sign({ userId: user.id }, process.env.APP_SECRET as string),
+          user,
+        }
       },
     })
 

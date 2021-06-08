@@ -1,3 +1,3 @@
 export * from './Post'
 export * from './User'
-export * from './uuidType'
+export * from './types'

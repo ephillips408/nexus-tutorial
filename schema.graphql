@@ -2,11 +2,17 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String
+  user: User
+}
+
 type Mutation {
   createDraft(authorId: String!, body: String!, title: String!): Post!
   createUser(email: String!, password: String!, username: String!): User
   deletePost(id: String!): Post
   deleteUser(id: String!): User
+  login(email: String!, password: String!): AuthPayload
   publish(draftId: String!): Post
 }
 
@@ -20,11 +26,14 @@ type Post {
 }
 
 type Query {
+  allDrafts: [Post]!
+  allPosts: [Post]
   allUsers: [User]!
-  drafts: [Post]!
-  posts: [Post]
+  searchPosts(searchString: String!): [Post]
   userById(id: String!): User
 }
+
+scalar UUID
 
 type User {
   email: String!
