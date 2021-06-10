@@ -29,6 +29,7 @@ type Query {
   allDrafts: [Post]!
   allPosts: [Post]
   allUsers: [User]!
+  me: User
   searchPosts(searchString: String!): [Post]
   userById(id: String!): User
 }

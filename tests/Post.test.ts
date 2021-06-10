@@ -23,7 +23,7 @@ it('ensures that a draft can be created and published', async () => {
 Object {
   "createDraft": Object {
     "body": "...",
-    "id": "6ae33938-fe49-45a0-ac56-2bbc12ee48ff",
+    "id": "3ce65793-5695-4fdf-b482-38b4455dc959",
     "published": false,
     "title": "Nexus",
   },
@@ -49,7 +49,7 @@ Object {
 Object {
   "publish": Object {
     "body": "...",
-    "id": "6ae33938-fe49-45a0-ac56-2bbc12ee48ff",
+    "id": "3ce65793-5695-4fdf-b482-38b4455dc959",
     "published": true,
     "title": "Nexus",
   },
@@ -69,29 +69,29 @@ Array [
   },
   Object {
     "authorId": "d5e48528-5a1b-4c19-bca6-64fece448e9e",
-    "body": "Second post",
-    "id": "0dc4b619-f514-49f8-937a-d047168fa27f",
-    "published": false,
-    "title": "Hello Second Post",
-  },
-  Object {
-    "authorId": "d5e48528-5a1b-4c19-bca6-64fece448e9e",
-    "body": "...",
-    "id": "f9714ef7-b84a-4e60-bfe2-ee4bdf0ef59d",
-    "published": false,
-    "title": "Nexus",
-  },
-  Object {
-    "authorId": "d5e48528-5a1b-4c19-bca6-64fece448e9e",
-    "body": "...",
-    "id": "624db3e0-8643-4204-a27d-9f0bf30a287e",
-    "published": false,
-    "title": "Nexus",
-  },
-  Object {
-    "authorId": "d5e48528-5a1b-4c19-bca6-64fece448e9e",
     "body": "...",
     "id": "6ae33938-fe49-45a0-ac56-2bbc12ee48ff",
+    "published": true,
+    "title": "Nexus",
+  },
+  Object {
+    "authorId": "f59aa33b-5852-4039-b996-e34558e5b97e",
+    "body": "This post is by the first user",
+    "id": "09551607-d891-4963-b28d-fce88d984cf8",
+    "published": true,
+    "title": "User One Post",
+  },
+  Object {
+    "authorId": "d5e48528-5a1b-4c19-bca6-64fece448e9e",
+    "body": "...",
+    "id": "dfbb1f7e-1f6a-4529-a03b-b53a7cf4770f",
+    "published": true,
+    "title": "Nexus",
+  },
+  Object {
+    "authorId": "d5e48528-5a1b-4c19-bca6-64fece448e9e",
+    "body": "...",
+    "id": "3ce65793-5695-4fdf-b482-38b4455dc959",
     "published": true,
     "title": "Nexus",
   },

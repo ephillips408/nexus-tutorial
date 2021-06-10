@@ -2,6 +2,8 @@ import { objectType, extendType, nonNull, stringArg } from 'nexus'
 import { compare, hash } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
 
+import { getUserId } from './utils'
+
 export const User = objectType({
   name: 'User',
   definition(t) {
@@ -38,6 +40,16 @@ export const UserQuery = extendType({
       resolve(_root, _args, ctx) {
         return ctx.db.user.findFirst({ where: { id: _args.id || undefined } })
       },
+    })
+
+    t.field('me', {
+      type: 'User',
+      async resolve(_parent, _args, ctx) {
+        const userId = getUserId(ctx)
+        return ctx.db.user.findUnique({
+          where: { id: String(userId) }
+        })
+      }
     })
   },
 })
@@ -91,18 +103,15 @@ export const UserMutation = extendType({
         password: nonNull(stringArg()),
       },
       async resolve(_parent, _args, ctx) {
-        const user = await ctx.db.user
-          .findUnique({
-            where: {
-              email: _args.email
-            },
-          })
-        
+        const user = await ctx.db.user.findUnique({
+          where: {
+            email: _args.email,
+          },
+        })
+
         if (!user) {
           throw new Error(`No user found with email ${_args.email}`)
         }
-
-        console.log(user.password)
 
         const passwordValid = await compare(_args.password, user.password)
 
