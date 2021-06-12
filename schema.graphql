@@ -10,10 +10,10 @@ type AuthPayload {
 type Mutation {
   createDraft(authorId: String!, body: String!, title: String!): Post!
   createUser(email: String!, password: String!, username: String!): User
-  deletePost(id: String!): Post
+  deletePost(postId: String!, userId: String!): Post
   deleteUser(id: String!): User
   login(email: String!, password: String!): AuthPayload
-  publish(draftId: String!): Post
+  publish(draftId: String!, userId: String!): Post
 }
 
 type Post {
@@ -29,7 +29,7 @@ type Query {
   allDrafts: [Post]!
   allPosts: [Post]
   allUsers: [User]!
-  me: User
+  currentUser: User
   searchPosts(searchString: String!): [Post]
   userById(id: String!): User
 }

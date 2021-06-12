@@ -85,7 +85,7 @@ export interface NexusGenFieldTypes {
     allDrafts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
     allPosts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
     allUsers: Array<NexusGenRootTypes['User'] | null>; // [User]!
-    me: NexusGenRootTypes['User'] | null; // User
+    currentUser: NexusGenRootTypes['User'] | null; // User
     searchPosts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
     userById: NexusGenRootTypes['User'] | null; // User
   }
@@ -123,7 +123,7 @@ export interface NexusGenFieldTypeNames {
     allDrafts: 'Post'
     allPosts: 'Post'
     allUsers: 'User'
-    me: 'User'
+    currentUser: 'User'
     searchPosts: 'Post'
     userById: 'User'
   }
@@ -149,7 +149,8 @@ export interface NexusGenArgTypes {
       username: string; // String!
     }
     deletePost: { // args
-      id: string; // String!
+      postId: string; // String!
+      userId: string; // String!
     }
     deleteUser: { // args
       id: string; // String!
@@ -160,6 +161,7 @@ export interface NexusGenArgTypes {
     }
     publish: { // args
       draftId: string; // String!
+      userId: string; // String!
     }
   }
   Query: {

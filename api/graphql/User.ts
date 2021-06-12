@@ -42,7 +42,7 @@ export const UserQuery = extendType({
       },
     })
 
-    t.field('me', {
+    t.field('currentUser', {
       type: 'User',
       async resolve(_parent, _args, ctx) {
         const userId = getUserId(ctx)

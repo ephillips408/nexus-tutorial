@@ -1,5 +1,7 @@
 import { objectType, extendType, stringArg, nonNull } from 'nexus'
 import { resolveImportPath } from 'nexus/dist/utils'
+import { Context } from '../context'
+import { getUserId } from './utils'
 
 export const Post = objectType({
   name: 'Post',
@@ -72,13 +74,20 @@ export const PostMutation = extendType({
         title: nonNull(stringArg()),
         body: nonNull(stringArg()),
       },
-      resolve(_root, args, ctx) {
+      resolve(_root, _args, ctx) {
+        const userId = getUserId(ctx)
+
+        if (userId !== _args.authorId) {
+          throw new Error('Unauthorized User!')
+        }
+
         const draft = {
-          authorId: args.authorId,
-          title: args.title,
-          body: args.body,
+          authorId: _args.authorId,
+          title: _args.title,
+          body: _args.body,
           published: false,
         }
+
         return ctx.db.post.create({ data: draft })
       },
     })
@@ -86,11 +95,25 @@ export const PostMutation = extendType({
     t.field('publish', {
       type: 'Post',
       args: {
+        userId: nonNull(stringArg()),
         draftId: nonNull(stringArg()),
       },
-      resolve(_root, args, ctx) {
+      async resolve(_root, _args, ctx) {
+        const post = await ctx.db.post.findFirst({
+          where: {
+            id: _args.draftId,
+            authorId: _args.userId
+          }
+        })
+
+        const postAuthor = getUserId(ctx)
+
+        if (post?.authorId !== _args.userId) {
+          throw new Error('Unauthorized User!')
+        }
+
         return ctx.db.post.update({
-          where: { id: args.draftId },
+          where: { id: _args.draftId },
           data: {
             published: true,
           },
@@ -101,10 +124,25 @@ export const PostMutation = extendType({
     t.field('deletePost', {
       type: 'Post',
       args: {
-        id: nonNull(stringArg()),
+        userId: nonNull(stringArg()),
+        postId: nonNull(stringArg()),
       },
-      resolve(_, args, ctx) {
-        return ctx.db.post.delete({ where: { id: args.id } })
+      async resolve(_, _args, ctx) {
+        const post = await ctx.db.post.findFirst({
+          where: {
+            id: _args.postId,
+            authorId: _args.userId
+          }
+        })
+        
+        const postAuthor = getUserId(ctx)
+
+        if (post?.authorId !== postAuthor) {
+          // Trying to delete the same post twice still gives this error.
+          throw new Error('Unauthorized User!')
+        }
+
+        return ctx.db.post.delete({ where: { id: _args.postId } })
       },
     })
   },
