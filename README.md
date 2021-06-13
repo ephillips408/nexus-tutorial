@@ -1,6 +1,6 @@
 ## Nexus Tutorial Additions
 
-This repo contains additions to the Nexus tutorial that is provided in the Nexus docs. The beginning of the tutorial can be found (https://nexusjs.org/docs/getting-started/tutorial)[here]. While creating this API, I found (https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-auth)[this] repo helpful. There are obviously similarities between my additions and this repo.
+This repo contains additions to the Nexus tutorial that is provided in the Nexus docs. The beginning of the tutorial can be found [here](https://nexusjs.org/docs/getting-started/tutorial). While creating this API, I found [this](https://github.com/prisma/prisma-examples/tree/latest/typescript/graphql-auth) repo helpful. There are obviously similarities between my additions and this repo.
 
 Additions include the following:
 * User model
