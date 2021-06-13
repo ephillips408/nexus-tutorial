@@ -14,6 +14,7 @@ type Mutation {
   deleteUser(id: String!): User
   login(email: String!, password: String!): AuthPayload
   publish(draftId: String!, userId: String!): Post
+  updatePost(body: String, postId: String!, published: Boolean!, title: String!, userId: String!): Post
 }
 
 type Post {

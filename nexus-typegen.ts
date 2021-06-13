@@ -72,6 +72,7 @@ export interface NexusGenFieldTypes {
     deleteUser: NexusGenRootTypes['User'] | null; // User
     login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     publish: NexusGenRootTypes['Post'] | null; // Post
+    updatePost: NexusGenRootTypes['Post'] | null; // Post
   }
   Post: { // field return type
     author: NexusGenRootTypes['User'] | null; // User
@@ -110,6 +111,7 @@ export interface NexusGenFieldTypeNames {
     deleteUser: 'User'
     login: 'AuthPayload'
     publish: 'Post'
+    updatePost: 'Post'
   }
   Post: { // field return type name
     author: 'User'
@@ -161,6 +163,13 @@ export interface NexusGenArgTypes {
     }
     publish: { // args
       draftId: string; // String!
+      userId: string; // String!
+    }
+    updatePost: { // args
+      body?: string | null; // String
+      postId: string; // String!
+      published: boolean; // Boolean!
+      title: string; // String!
       userId: string; // String!
     }
   }

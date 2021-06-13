@@ -1,6 +1,4 @@
-import { objectType, extendType, stringArg, nonNull } from 'nexus'
-import { resolveImportPath } from 'nexus/dist/utils'
-import { Context } from '../context'
+import { objectType, extendType, stringArg, nonNull, booleanArg } from 'nexus'
 import { getUserId } from './utils'
 
 export const Post = objectType({
@@ -102,8 +100,8 @@ export const PostMutation = extendType({
         const post = await ctx.db.post.findFirst({
           where: {
             id: _args.draftId,
-            authorId: _args.userId
-          }
+            authorId: _args.userId,
+          },
         })
 
         const postAuthor = getUserId(ctx)
@@ -121,6 +119,42 @@ export const PostMutation = extendType({
       },
     })
 
+    t.field('updatePost', {
+      type: 'Post',
+      args: {
+        userId: nonNull(stringArg()),
+        postId: nonNull(stringArg()),
+        title: nonNull(stringArg()),
+        body: stringArg(),
+        published: nonNull(booleanArg()),
+      },
+      async resolve(_root, { userId, postId, title, body, published }, ctx) {
+        const post = await ctx.db.post.findFirst({
+          where: {
+            id: postId,
+            authorId: userId,
+          },
+        })
+
+        const postAuthor = getUserId(ctx)
+
+        if (post?.authorId !== postAuthor) {
+          throw new Error('Unauthorized User!')
+        }
+
+        return ctx.db.post.update({
+          where: {
+            id: postId
+          },
+          data: {
+            title,
+            body,
+            published,
+          }
+        })
+      },
+    })
+
     t.field('deletePost', {
       type: 'Post',
       args: {
@@ -131,10 +165,10 @@ export const PostMutation = extendType({
         const post = await ctx.db.post.findFirst({
           where: {
             id: _args.postId,
-            authorId: _args.userId
-          }
+            authorId: _args.userId,
+          },
         })
-        
+
         const postAuthor = getUserId(ctx)
 
         if (post?.authorId !== postAuthor) {

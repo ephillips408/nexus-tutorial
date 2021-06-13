@@ -47,9 +47,9 @@ export const UserQuery = extendType({
       async resolve(_parent, _args, ctx) {
         const userId = getUserId(ctx)
         return ctx.db.user.findUnique({
-          where: { id: String(userId) }
+          where: { id: String(userId) },
         })
-      }
+      },
     })
   },
 })
@@ -132,6 +132,12 @@ export const UserMutation = extendType({
         id: nonNull(stringArg()),
       },
       resolve(_root, _args, ctx) {
+        const userId = getUserId(ctx)
+
+        if (_args.id !== userId) {
+          throw new Error('Unauthorized User')
+        }
+
         return ctx.db.user.delete({ where: { id: _args.id } })
       },
     })
