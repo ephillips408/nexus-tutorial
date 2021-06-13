@@ -22,7 +22,11 @@ npm install
 npx prisma migrate dev --name init
 ```
 4. In the root directory, create a `.env` file, and add `APP_SECRET="yourchoiceofstring"`
-5. Navigate to [https://localhost:4000] and create queries and mutations.
+5. Run the following command:
+```
+npm run dev
+```
+6. Navigate to [https://localhost:4000](https://localhost:4000) and create queries and mutations.
 
 For methods that require user authorization, set the HTTP Header as follows
 ```json
