@@ -10,3 +10,23 @@ Additions include the following:
 * User authentication
 
 At this time, I have not written any tests for the added user or post methods.
+
+To run this file, complete the following steps
+1. Clone the repo
+2. Install the dependencies with the following command:
+```
+npm install
+```
+3. Create the database with the following command
+```
+npx prisma migrate dev --name init
+```
+4. In the root directory, create a `.env` file, and add `APP_SECRET="yourchoiceofstring"`
+5. Navigate to [https://localhost:4000] and create queries and mutations.
+
+For methods that require user authorization, set the HTTP Header as follows
+```json
+{
+  "Authorization": "Bearer __TOKEN__"
+}
+```
